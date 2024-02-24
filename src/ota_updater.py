@@ -146,12 +146,13 @@ class Github:
         print('Update installed, please reboot now')
 
     def __rmtree(self, directory):
-        for entry in os.listdir(directory):
-            is_dir = entry[1] == 0x4000
+        for entry in os.ilistdir(directory):
+            is_dir = entry[1] == 0x4000  # 0x4000 is the flag for directories
+            full_path = directory + '/' + entry[0]
             if is_dir:
-                self.__rmtree(directory + '/' + entry[0])
+                self.__rmtree(full_path)
             else:
-                os.remove(directory + '/' + entry[0])
+                os.remove(full_path)
         os.rmdir(directory)
 
     def __os_supports_rename(self) -> bool:
@@ -166,18 +167,29 @@ class Github:
             self.__mk_dirs(to_path)
 
         for entry in os.listdir(from_path):
-            source_path = os.path.join(from_path, entry)
-            destination_path = os.path.join(to_path, entry)
+            source_path = from_path + '/' + entry
+            destination_path = to_path + '/' + entry
 
-            if os.path.isdir(source_path):
+            if self.__is_dir(source_path):
                 self.__copy_directory(source_path, destination_path)
             else:
                 self.__copy_file(source_path, destination_path)
 
+    def __is_dir(self, path):
+        try:
+            return os.stat(path)[0] == 0o040000  # 0o040000 is the flag for directories
+        except OSError:
+            return False
+
+
     def __copy_file(self, from_path, to_path, chunk_size=512):
         with open(from_path, 'rb') as from_file, open(to_path, 'wb') as to_file:
-            while chunk := from_file.read(chunk_size):
-                to_file.write(chunk)
+            while True:
+                chunk = from_file.read(chunk_size)
+                if chunk:
+                    to_file.write(chunk)
+                else:
+                    break
 
     def __exists_dir(self, path) -> bool:
         try:
@@ -190,5 +202,5 @@ class Github:
         paths = path.split('/')
         path_to_create = ''
         for directory in paths:
-            path_to_create = os.path.join(path_to_create, directory)
+            path_to_create += '/' + directory
             self._mkdir(path_to_create)

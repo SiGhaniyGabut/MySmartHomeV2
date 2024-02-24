@@ -3,7 +3,7 @@
   "python.linting.enabled": true,
   "python.linting.pylintEnabled": false,
   "python.analysis.typeCheckingMode": "basic",
-  "python.analysis.extraPaths": [".typings", "src/lib"],
-  "python.autoComplete.extraPaths": [".typings", "src/lib"],
+  "python.analysis.extraPaths": [".typings", "lib"],
+  "python.autoComplete.extraPaths": [".typings", "lib"],
   "remote.autoForwardPortsFallback": 0
 }
