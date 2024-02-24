@@ -1,0 +1,9 @@
+{
+  "python.languageServer": "Pylance",
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.extraPaths": [".typings", "src/lib"],
+  "python.autoComplete.extraPaths": [".typings", "src/lib"],
+  "remote.autoForwardPortsFallback": 0
+}
