@@ -3,6 +3,10 @@
         "ssid": "YOUR WIFI SSID",
         "password": "YOUR WIFI PASSWORD"
     },
+    "device": {
+        "api_key": "",
+        "wss_url": "wss://localhost:3000/devices"
+    },
     "github_repo": "YOUR GITHUB REPO. (e.g: SiGhaniyGabut/MySmartHomeV2)",
     "timezone_offset": 7
 }
