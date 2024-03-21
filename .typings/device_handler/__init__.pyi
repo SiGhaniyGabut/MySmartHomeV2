@@ -1,6 +1,4 @@
 from collections import namedtuple
-from wifi_connect import WiFiConnect
-from async_websocket_client import AsyncWebsocketClient
 
 class Message:
     """
