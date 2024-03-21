@@ -4,7 +4,7 @@ from http_client import HttpClient
 GITHUB_API_URL = 'https://api.github.com'
 GITHUB_RAW_URL = 'https://raw.githubusercontent.com'
 
-class Github:
+class Updater:
     def __init__(self, github_repo, github_src_dir='', module='', main_dir='main', new_version_dir='next', secrets_file=None):
         self.request = HttpClient()
         self.repo = github_repo.rstrip('/').replace('https://github.com/', '').replace('.git', '')
@@ -180,7 +180,6 @@ class Github:
             return os.stat(path)[0] == 0o040000  # 0o040000 is the flag for directories
         except OSError:
             return False
-
 
     def __copy_file(self, from_path, to_path, chunk_size=512):
         with open(from_path, 'rb') as from_file, open(to_path, 'wb') as to_file:

@@ -1,11 +1,11 @@
 # Ignore folders
 .typings/*
 
-# Don't ignore folders on .typings for
-# http_client, wifi_connect, localtime, and ota_updater
+# Don't ignore folders on .typings for custom modules
 !.typings/http_client
 !.typings/wifi_connect
 !.typings/localtime
-!.typings/ota_updater
+!.typings/updater
+!.typings/device_handler
 
 config.json

@@ -1,4 +1,4 @@
-class Github:
+class Updater:
     """
     A class to update your MicroController with the latest version from a GitHub tagged release,
     optimized for low power usage.
