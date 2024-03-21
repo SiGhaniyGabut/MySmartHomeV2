@@ -1,21 +1,19 @@
 # This is script that run when device boot up or wake from sleep.
 import machine, esp, gc, json
 from wifi_connect import WiFiConnect
-from main.ota_updater import Github as OTAUpdater
+from main.updater import Updater
 
 with open('config.json', 'r') as f: configurations = json.loads(f.read())
 f.close()
 
 # Connect to WiFi
-WiFiConnect(**configurations['wifi']).start()
+WiFiConnect().start(**configurations['wifi'])
 
-ota_updater = OTAUpdater(configurations['github_repo'])
-has_updated = ota_updater.install_update_if_available()
+has_updated = Updater(configurations['github_repo']).install_update_if_available()
 
-if has_updated:
-    machine.reset()
+if has_updated: machine.reset()
 else:
-    del(ota_updater)
+    del(has_updated)
     del(configurations)
     gc.collect()
 
