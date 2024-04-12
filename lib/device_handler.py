@@ -28,7 +28,7 @@ class DeviceHandler(Message):
         self.websocket = AsyncWebsocketClient()
         self.authenticated = False
 
-    async def connect(self, reconnect_in: int = 5, max_retries: int = 5, auth_wait_cycles: int = 10, auth_cycle_duration: int = 1) -> None:
+    async def connect(self, reconnect_in: int = 5, max_retries: int = 720, auth_wait_cycles: int = 10, auth_cycle_duration: int = 1) -> None:
         retries = max_retries
         await self.websocket.handshake(self.url)
 

@@ -47,14 +47,16 @@ class DeviceHandler(Message):
     """
     def __init__(self, url: str, api_key: str) -> None: ...
 
-    async def connect(self, reconnect_in: int = 5, max_retries: int = 5, auth_wait_cycles: int = 10, auth_cycle_duration: int = 1) -> None:
+    async def connect(self, reconnect_in: int = 5, max_retries: int = 720, auth_wait_cycles: int = 10, auth_cycle_duration: int = 1) -> None:
         """
         Connect to the WebSocket server and authenticate the device.
 
         Max Retries and Auth Wait Cycles are used to handle connection and authentication retries.
         If the device is not authenticated after several cycles, the connection will be closed.
 
-        Cycle Duration in Seconds.
+        Reconnection, by default is set to 1 hour (720 retries * 5 seconds per each retry).
+
+        Reconnect and Cycle Duration in Seconds.
         """
         ...
 
@@ -85,10 +87,11 @@ class DeviceHandler(Message):
         - Authenticate the device
         - Subscribe to the server's messages
 
-        If any of the steps failed, the loop will be aborted. Async Callback must be passed as handler of
-        the incoming messages from the server.
+        If any of the steps failed, the loop will be aborted.
 
-        Args and Kwargs are Connect Function's arguments.
+        Async Callback must be passed as handler of the incoming messages from the server.
+
+        Args and Kwargs are Connect's Function arguments.
         """
         ...
 
