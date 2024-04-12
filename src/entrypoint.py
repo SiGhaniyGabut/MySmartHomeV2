@@ -41,7 +41,6 @@ class EntryPoint(MessageHandler):
         super().__init__()
         self.localtime = LocalTime(config['timezone_offset'])
         self.device_handler = DeviceHandler(config['device']['wss_url'], config['device']['api_key'])
-        self.device_handler.
     
     def run(self):
         # Set NTP Time
