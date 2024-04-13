@@ -15,3 +15,8 @@ class WiFiConnect:
         """
         Get the IP address, subnet mask, gateway and DNS server of the WLAN interface.
         """
+
+    def is_connected(self):
+        """
+        Check if the WLAN is connected.
+        """

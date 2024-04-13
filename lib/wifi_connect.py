@@ -2,20 +2,22 @@ import network
 
 class WiFiConnect:
     def __init__(self):
-        pass
+        self.wlan = network.WLAN(network.STA_IF)
 
     def start(self, ssid, password):
-        sta_if = network.WLAN(network.STA_IF)
-        if not sta_if.isconnected():
+        if not self.is_connected():
             print('Connecting to network...')
-            sta_if.active(True)
-            sta_if.connect(ssid, password)
-            while not sta_if.isconnected(): pass
+            self.wlan.active(True)
+            self.wlan.connect(ssid, password)
+            while not self.is_connected(): pass
 
         print('Network Configured!')
 
     def config(self, value):
-        return network.WLAN(network.STA_IF).config(value)
+        return self.wlan.config(value)
 
     def ifconfig(self):
-        return network.WLAN(network.STA_IF).ifconfig()
+        return self.wlan.ifconfig()
+
+    def is_connected(self):
+        return self.wlan.isconnected()
