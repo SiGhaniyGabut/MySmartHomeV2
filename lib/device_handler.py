@@ -29,25 +29,33 @@ class DeviceHandler(Message):
         self.authenticated = False
 
     async def connect(self, reconnect_in: int = 5, max_retries: int = 720, auth_wait_cycles: int = 10, auth_cycle_duration: int = 1) -> None:
-        retries = max_retries
-        await self.websocket.handshake(self.url)
+        retries = max_retries            
 
-        while not await self.websocket.open():
-            if retries == 0:
-                print(f'Failed to connect to WebSocket server after {max_retries} retries.')
-                break
+        while retries > 0:
+            try:
+                await self.websocket.handshake(self.url)
 
-            print(f'Connection failed. Retrying in {reconnect_in} seconds...')
-            await self.websocket.close()
+                while not await self.websocket.open():
+                    if retries == 0: break
 
-            # Wait for the next retry...
-            await asyncio.sleep(reconnect_in)
-            await self.websocket.handshake(self.url)
+                    print(f'Connection failed. Retrying in {reconnect_in} seconds...')
+                    await self.websocket.close()
 
-            retries -= 1
+                    # Wait for the next retry...
+                    await asyncio.sleep(reconnect_in)
+                    await self.websocket.handshake(self.url)
+
+                    retries -= 1
+                else:
+                    print(f'Connected to {self.url}. Authenticating...')
+                    await self.__authenticate(auth_wait_cycles, auth_cycle_duration)
+                    break # outer loop if connection and authentication are successful
+            except Exception as e:
+                print(f'Internet connection failed. Reconnecting in {reconnect_in} seconds...')
+                await asyncio.sleep(reconnect_in)
+                retries -= 1
         else:
-            print(f'Connected to {self.url}. Authenticating...')
-            await self.__authenticate(auth_wait_cycles, auth_cycle_duration)
+            print(f'Failed to connect to WebSocket server after {max_retries} retries.')
 
     async def publish(self, event: str, topic: str, subject: str, payload: dict = {}) -> None:
         await self.websocket.send(self.__request(event, topic, subject, payload))
